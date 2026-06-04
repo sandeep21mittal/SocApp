@@ -1,0 +1,13 @@
+{
+  "name": "chinab-apartment-society",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "start": "node --no-warnings server.mjs",
+    "check": "node --check server.mjs && node --check app.js"
+  }
+}
