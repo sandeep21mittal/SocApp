@@ -6,6 +6,8 @@ let state = {
   loading: true,
   error: "",
   loginError: "",
+  actionError: "",
+  actionMessage: "",
   loginRole: "resident",
   loginFlatId: "",
   loginMobile: "",
@@ -105,6 +107,7 @@ function render() {
         <div class="logout"><button class="btn" data-logout="true">Logout</button></div>
       </aside>
       <main class="main">
+        ${renderActionMessages()}
         ${state.role === "admin" ? renderAdmin() : renderResident()}
       </main>
     </div>
@@ -396,7 +399,7 @@ function bindEvents() {
   });
   document.querySelector("[data-refresh]")?.addEventListener("click", loadData);
   document.querySelector("[data-logout]")?.addEventListener("click", () => setState({ loggedIn: false }));
-  document.querySelectorAll("[data-tab]").forEach((button) => button.addEventListener("click", () => setState({ activeTab: button.dataset.tab })));
+  document.querySelectorAll("[data-tab]").forEach((button) => button.addEventListener("click", () => setState({ activeTab: button.dataset.tab, actionError: "", actionMessage: "" })));
 
   document.querySelector("#loginForm")?.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -444,18 +447,26 @@ function bindForm(selector, path, mapper) {
   document.querySelector(selector)?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const payload = mapper(new FormData(event.currentTarget));
-    await update(path, "POST", payload);
-    event.currentTarget.reset();
+    const saved = await update(path, "POST", payload);
+    if (saved) event.currentTarget.reset();
   });
 }
 
 async function update(path, method, body = {}) {
   try {
     const data = await api(path, { method, body: JSON.stringify(body) });
-    setState({ ...data, loginError: "" });
+    setState({ ...data, loginError: "", actionError: "", actionMessage: "Saved successfully." });
+    return true;
   } catch (error) {
-    setState({ loginError: error.message });
+    setState({ actionError: error.message, actionMessage: "" });
+    return false;
   }
+}
+
+function renderActionMessages() {
+  if (state.actionError) return `<p class="error-text">${escapeHtml(state.actionError)}</p>`;
+  if (state.actionMessage) return `<p class="success-text">${escapeHtml(state.actionMessage)}</p>`;
+  return "";
 }
 
 function currentFlat() {

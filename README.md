@@ -1,6 +1,6 @@
 # Chinab Apartment Society App
 
-This is the first database-driven prototype for a simple society maintenance app.
+This is a database-driven prototype for a simple society maintenance app.
 
 ## What is included
 
@@ -11,7 +11,7 @@ This is the first database-driven prototype for a simple society maintenance app
 - Complaint creation and admin status update
 - Society notices
 - Basic collection and pending dues reports
-- Local SQLite database
+- PostgreSQL database for hosted deployment
 - Node API for resident/admin data
 - Block master creation
 - Flat master creation
@@ -29,9 +29,18 @@ Then open:
 
 `http://localhost:4173`
 
-No package installation is required. The database uses Node's built-in SQLite support and is created at:
+Install dependencies once:
 
-`D:\sandeep\Codex\data\chinab-society.db`
+```powershell
+npm install
+```
+
+Set your PostgreSQL connection string, then start:
+
+```powershell
+$env:DATABASE_URL="postgresql://postgres:[YOUR-PASSWORD]@[YOUR-HOST]:5432/postgres"
+npm start
+```
 
 ## Make it live for testing
 
@@ -53,6 +62,7 @@ Create a GitHub repository and upload this project folder.
    - Build command: `npm install`
    - Start command: `npm start`
    - Environment variable: `NODE_VERSION=22`
+   - Environment variable: `DATABASE_URL=your Supabase PostgreSQL connection string`
 7. Deploy
 
 Render will give you a public URL like:
@@ -63,7 +73,7 @@ Share that URL with testers.
 
 ### Important for live testing
 
-This version still uses SQLite. It is okay for a small demo, but for serious testing with many users, move the database to Supabase/PostgreSQL so data is safer and easier to back up.
+This version uses PostgreSQL. On first start it creates required tables automatically. If you want demo data, set `SEED_DEMO=true` for the first run only, then remove it so demo data is not recreated.
 
 ## Demo login
 
@@ -76,6 +86,5 @@ This version still uses SQLite. It is okay for a small demo, but for serious tes
 - Convert to Flutter Android app or React Native
 - Import real flat owner data from Excel
 - Add OTP login
-- Move database to Firebase/Supabase/PostgreSQL when ready for production
 - Add Razorpay/UPI payment
 - Add PDF receipts and Excel reports

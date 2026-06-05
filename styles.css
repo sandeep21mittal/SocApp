@@ -441,6 +441,16 @@ tr:last-child td {
   font-size: 13px;
 }
 
+.success-text {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid #9fd5c7;
+  border-radius: 7px;
+  background: #edf9f5;
+  color: var(--ok);
+  font-size: 13px;
+}
+
 .otp-demo {
   margin: 0;
   padding: 12px;
